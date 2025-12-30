@@ -292,7 +292,6 @@ TextLabel.TextColor3 = Color3.fromRGB(0, 0, 0)
 TextLabel.TextSize = 37.000
 
 UICorner_2.Parent = TextLabel
-local OriginalFireRate = nil
 local OriginalSpread
 
 if AC then
@@ -301,9 +300,6 @@ if AC then
 
 	for i,v in pairs(Weapons:GetChildren()) do
 		for ii,vv in pairs(v:GetChildren()) do
-			if vv.Name == "FireRate" then
-				OriginalFireRate = vv.Value
-			end
 
 			if vv.Name == "Auto" then
 				vv.Value = true
@@ -338,59 +334,32 @@ end
 EspButton.MouseButton1Down:Connect(function()
 	if EspButton.Text == "Enable" then
 		for am, pl in pairs(_wspace:GetChildren()) do
-			if pl:IsA("Model") and pl:FindFirstChild("Humanoid") then
-				if pl.Name == _lPlayer.Name then
-					_localPlayerTeamColor = pl:GetAttribute("TeamColor")
-
-				else
-
-					_OtherPlayersTeamColor = pl:GetAttribute("TeamColor")
-				end
-
-				if _localPlayerTeamColor == _OtherPlayersTeamColor then
-
-				else
-					for i,v in pairs(pl) do 
-						if v:IsA("Highlight") and v.Name == "0ex" then
-						else
-							local Highlight = Instance.new("Highlight")
-							Highlight.name = "0ex"
-							Highlight.Parent = pl
-							Highlight.FillTransparency = 1
-							Highlight.OutlineColor = Color3.new(255, 255, 255)
-							print(Highlight)
-
-						end
+			for amm,pll in pairs(pl:GetChildren()) do
+				if pll.Name == "HumanoidRootPart" then
+					if pll.Parent:FindFirstChild("0ex") then
+					else
+						local Highlight = Instance.new("Highlight")
+						Highlight.Name = "0ex"
+						Highlight.Parent = pl
+						Highlight.FillTransparency = 1
+						Highlight.OutlineColor = Color3.new(255, 255, 255)
 					end
 				end
 			end
 		end
+
 		EspButton.Text = "Disable"
 	elseif EspButton.Text == "Disable" then
-		EspButton.Text = "Enable"
-		if EspButton.Text == "Enable" then
-			for am, pl in pairs(_wspace:GetChildren()) do
-				if pl:IsA("Model") and pl:FindFirstChild("Humanoid") then
-					if pl.Name == _lPlayer.Name then
-						_localPlayerTeamColor = pl:GetAttribute("TeamColor")
-
-					else
-
-						_OtherPlayersTeamColor = pl:GetAttribute("TeamColor")
-					end
-
-					if _localPlayerTeamColor == _OtherPlayersTeamColor then
-
-					else
-						for i,v in pairs(pl) do 
-							if v:IsA("Highlight") and v.Name == "0ex" then
-								v:Destroy()
-							end
-						end
+		for am, pl in pairs(_wspace:GetChildren()) do
+			for amm,pll in pairs(pl:GetChildren()) do
+				if pll.Name == "HumanoidRootPart" then
+					if pll.Parent:FindFirstChild("0ex") then
+						pll.Parent:FindFirstChild("0ex"):Destroy()
 					end
 				end
 			end
 		end
+		EspButton.Text = "Enable"
 	end
 end)
 
@@ -411,8 +380,6 @@ RapidFireButton.MouseButton1Down:Connect(function()
 				if vv.Name == "FireRate" then
 					if RapidFireButton.Text == "Enable" then
 						vv.Value = 0.001
-					else
-						vv.Value = OriginalFireRate
 					end
 				end
 			end
