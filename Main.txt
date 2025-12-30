@@ -1,0 +1,55 @@
+-- Simple Cheat By 0xKaliEnjoyer
+
+local _r = game:GetService("ReplicatedStorage")
+
+local Weapons = _r.Weapons
+local Enabled = true
+
+local AmmoVal = 10
+
+local _RF = game:GetService("ReplicatedFirst")
+local AC = _RF:WaitForChild("NewLoader")
+
+
+if AC then
+    print("AC Found")
+    AC.Disabled = true
+        
+    for i,v in pairs(Weapons:GetChildren()) do
+        for ii,vv in pairs(v:GetChildren()) do
+                if vv.Name == "FireRate" then
+                    vv.Value = 0.001
+                end
+
+                if vv.Name == "Ammo" then
+
+                end
+
+                if vv.Name == "Auto" then
+                    vv.Value = true
+                end
+
+                if vv.Name == "Range" then 
+                    vv.Value = 1000
+                end
+
+                if vv.Name == "RecoilControl" then 
+                    vv.Value = 0
+                end
+
+                if vv.Name == "DMG" then 
+                    vv.Value += 999
+                end
+
+                if vv.Name == "Tags" then 
+                    for iii,vvv in pairs(vv:GetChildren()) do
+                        if vvv.Name == "WeaponType" then
+                            vvv.Value = "Automatic"
+                        end
+                    end
+                end
+        end
+    end
+else
+    game.Players.LocalPlayer:kick("AC Not Found")
+end
