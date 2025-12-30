@@ -1,0 +1,36 @@
+--Simple ESP System
+local _wspace = game.Workspace
+local _lPlayer = game:GetService("Players").LocalPlayer
+local UIS = game:GetService("UserInputService")
+local Enabled = true
+local _localPlayerTeamColor
+local _OtherPlayersTeamColor
+
+for am, pl in pairs(_wspace:GetChildren()) do
+    if pl:IsA("Model") and pl:FindFirstChild("Humanoid") then
+            if pl.Name == _lPlayer.Name then 
+                _localPlayerTeamColor = pl:GetAttribute("TeamColor")
+            else
+                
+                _OtherPlayersTeamColor = pl:GetAttribute("TeamColor")
+            end
+            if _localPlayerTeamColor == _OtherPlayersTeamColor then
+                print("Team names, I will not let you")
+
+            else
+                for i,v in pairs(pl) do 
+                    if v:IsA("Highlight") and v.Name == "0ex" then 
+                    else
+                        local Highlight = Instance.new("Highlight")
+                        Highlight.name = "0ex"
+                        Highlight.Parent = pl
+                        Highlight.FillTransparency = 1
+                        Highlight.OutlineColor = Color3.new(255, 255, 255)
+                    end 
+                end
+            end
+    end
+
+end
+
+
