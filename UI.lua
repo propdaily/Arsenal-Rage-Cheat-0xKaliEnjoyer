@@ -374,16 +374,14 @@ end)
 
 RapidFireButton.MouseButton1Down:Connect(function()
 	if RapidFireButton.Text == "Enable" then
-		RapidFireButton.Text = "Disable"
 		for i,v in pairs(Weapons:GetChildren()) do
 			for ii,vv in pairs(v:GetChildren()) do
 				if vv.Name == "FireRate" then
-					if RapidFireButton.Text == "Enable" then
-						vv.Value = 0.001
-					end
+					vv.Value = 0.001
 				end
 			end
 		end
+		RapidFireButton.Text = "Disable"
 	else
 		RapidFireButton.Text = "Enable"
 	end
