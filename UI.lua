@@ -292,118 +292,112 @@ TextLabel.TextColor3 = Color3.fromRGB(0, 0, 0)
 TextLabel.TextSize = 37.000
 
 UICorner_2.Parent = TextLabel
-local OriginalFireRate = {}
-local OriginalSpread = {}
+local OriginalFireRate = nil
+local OriginalSpread
 
 if AC then
-    print("AC Found")
-    AC.Disabled = true
-        
-    for i,v in pairs(Weapons:GetChildren()) do
-        for ii,vv in pairs(v:GetChildren()) do
-                if vv.Name == "FireRate" then
-                    OriginalFireRate = vv.Value
-                    if RapidFireButton.Text == "Enable" then
-                        vv.Value = 0.001
-                    else
-                        vv.Value = OriginalFireRate
-                    end
-                end
+	print("AC Found")
+	AC.Disabled = true
 
-                if vv.Name == "Ammo" then
+	for i,v in pairs(Weapons:GetChildren()) do
+		for ii,vv in pairs(v:GetChildren()) do
+			if vv.Name == "FireRate" then
+				OriginalFireRate = vv.Value
+			end
 
-                end
+			if vv.Name == "Auto" then
+				vv.Value = true
+			end
 
-                if vv.Name == "Auto" then
-                    vv.Value = true
-                end
+			if vv.Name == "Range" then 
+				vv.Value = 1000
+			end
 
-                if vv.Name == "Range" then 
-                    vv.Value = 1000
-                end
+			if vv.Name == "RecoilControl" then 
+				vv.Value = 0
+			end
 
-                if vv.Name == "RecoilControl" then 
-                    vv.Value = 0
-                end
+			if vv.Name == "DMG" then 
+				vv.Value = 999
+			end
 
-                if vv.Name == "DMG" then 
-                    vv.Value = 999
-                end
-
-                if vv.Name == "Tags" then 
-                    for iii,vvv in pairs(vv:GetChildren()) do
-                        if vvv.Name == "WeaponType" then
-                            vvv.Value = "Automatic"
-                        end
-                    end
-                end
-        end
-    end
+			if vv.Name == "Tags" then 
+				for iii,vvv in pairs(vv:GetChildren()) do
+					if vvv.Name == "WeaponType" then
+						vvv.Value = "Automatic"
+					end
+				end
+			end
+		end
+	end
 else
-    game.Players.LocalPlayer:kick("AC Not Found")
-end
-
-while wait() do
-    if EspButton.Text == "Enable" then
-        for am, pl in pairs(_wspace:GetChildren()) do
-            if pl:IsA("Model") and pl:FindFirstChild("Humanoid") then
-                        if pl.Name == _lPlayer.Name then 
-                            _localPlayerTeamColor = pl:GetAttribute("TeamColor")
-                        else
-                            
-                            _OtherPlayersTeamColor = pl:GetAttribute("TeamColor")
-                        end
-                        if _localPlayerTeamColor == _OtherPlayersTeamColor then
-                        else
-                            for i,v in pairs(pl) do 
-                                if v:IsA("Highlight") and v.Name == "0ex" then 
-                                else
-                                    local Highlight = Instance.new("Highlight")
-                                    Highlight.name = "0ex"
-                                    Highlight.Parent = pl
-                                    Highlight.FillTransparency = 1
-                                    Highlight.OutlineColor = Color3.new(255, 255, 255)
-                                end 
-                            end
-                        end
-            end
-        end
-
-    else
-        for am, pl in pairs(_wspace:GetChildren()) do
-            if pl:IsA("Model") and pl:FindFirstChild("Humanoid") then
-                        if pl.Name == _lPlayer.Name then 
-                            _localPlayerTeamColor = pl:GetAttribute("TeamColor")
-                        else
-                            
-                            _OtherPlayersTeamColor = pl:GetAttribute("TeamColor")
-                        end
-                        if _localPlayerTeamColor == _OtherPlayersTeamColor then
-                        else
-                            for i,v in pairs(pl) do 
-                                if v:IsA("Highlight") and v.Name == "0ex" then 
-                                    v:Destroy()
-                                end 
-                            end
-                        end
-            end
-    end
+	game.Players.LocalPlayer:Kick("AC Not Found")
 end
 
 
 EspButton.MouseButton1Down:Connect(function()
 	if EspButton.Text == "Enable" then
+		for am, pl in pairs(_wspace:GetChildren()) do
+			if pl:IsA("Model") and pl:FindFirstChild("Humanoid") then
+				if pl.Name == _lPlayer.Name then
+					_localPlayerTeamColor = pl:GetAttribute("TeamColor")
+
+				else
+
+					_OtherPlayersTeamColor = pl:GetAttribute("TeamColor")
+				end
+
+				if _localPlayerTeamColor == _OtherPlayersTeamColor then
+
+				else
+					for i,v in pairs(pl) do 
+						if v:IsA("Highlight") and v.Name == "0ex" then
+						else
+							local Highlight = Instance.new("Highlight")
+							Highlight.name = "0ex"
+							Highlight.Parent = pl
+							Highlight.FillTransparency = 1
+							Highlight.OutlineColor = Color3.new(255, 255, 255)
+							print(Highlight)
+
+						end
+					end
+				end
+			end
+		end
 		EspButton.Text = "Disable"
-		
-	else
+	elseif EspButton.Text == "Disable" then
 		EspButton.Text = "Enable"
+		if EspButton.Text == "Enable" then
+			for am, pl in pairs(_wspace:GetChildren()) do
+				if pl:IsA("Model") and pl:FindFirstChild("Humanoid") then
+					if pl.Name == _lPlayer.Name then
+						_localPlayerTeamColor = pl:GetAttribute("TeamColor")
+
+					else
+
+						_OtherPlayersTeamColor = pl:GetAttribute("TeamColor")
+					end
+
+					if _localPlayerTeamColor == _OtherPlayersTeamColor then
+
+					else
+						for i,v in pairs(pl) do 
+							if v:IsA("Highlight") and v.Name == "0ex" then
+								v:Destroy()
+							end
+						end
+					end
+				end
+			end
+		end
 	end
 end)
 
 NoSpreadButton.MouseButton1Down:Connect(function()
 	if NoSpreadButton.Text == "Enable" then
 		NoSpreadButton.Text = "Disable"
-		
+
 	else
 		NoSpreadButton.Text = "Enable"
 	end
@@ -412,7 +406,17 @@ end)
 RapidFireButton.MouseButton1Down:Connect(function()
 	if RapidFireButton.Text == "Enable" then
 		RapidFireButton.Text = "Disable"
-		
+		for i,v in pairs(Weapons:GetChildren()) do
+			for ii,vv in pairs(v:GetChildren()) do
+				if vv.Name == "FireRate" then
+					if RapidFireButton.Text == "Enable" then
+						vv.Value = 0.001
+					else
+						vv.Value = OriginalFireRate
+					end
+				end
+			end
+		end
 	else
 		RapidFireButton.Text = "Enable"
 	end
